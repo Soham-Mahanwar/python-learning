@@ -1,8 +1,0 @@
-# Minimal requirements for running the FastAPI server in a clean environment.
-# Add other dependencies from your full requirements if needed.
-fastapi>=0.95
-uvicorn[standard]>=0.20
-pydantic>=1.10
-python-dotenv>=0.21
-kiteconnect>=3.10
-twilio>=7.0
