@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "dev": "node start.js",
+    "lint": "eslint . --ext .js,.html",
+    "build": "echo 'No build needed'",
+    "preview": "node start.js",
+    "start": "node start.js",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -23,6 +24,8 @@
     "motion": "^12.23.24"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-html": "^8.1.1",
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^4.1.14",

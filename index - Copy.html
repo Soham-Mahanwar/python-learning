@@ -306,8 +306,7 @@ a{text-decoration:none; color:inherit;}
     <div class="tb-user" id="userInfo" style="display:none">
       Logged in as <b id="userName">—</b>
     </div>
-    <a class="tb-link" id="reloginBtn" href="login.html">🔑 Re-login</a>
-    <a class="tb-link" id="profileBtn" href="profile.html" style="display:none">👤 Profile</a>
+    <a class="tb-link" href="login.html">🔑 Re-login</a>
     <a class="tb-link" onclick="clearAndLogin()">🗑 Logout</a>
   </div>
 </div>
@@ -475,7 +474,7 @@ a{text-decoration:none; color:inherit;}
 
   <!-- Bottom actions -->
   <div class="bottom-row">
-    <button class="brow-btn brow-ghost" id="bottomReloginBtn" onclick="window.location.href='login.html'">
+    <button class="brow-btn brow-ghost" onclick="window.location.href='login.html'">
       🔑 Re-login / Change Token
     </button>
     <button class="brow-btn brow-danger" onclick="clearAndLogin()">
@@ -494,7 +493,7 @@ const SK = {
   TOKEN: 'ot_access_token',
   IDX:   'ot_selected_index',
 };
-const BACKEND = window.location.origin;
+const BACKEND = 'http://127.0.0.1:8000';
 
 // ── Init ──
 window.addEventListener('DOMContentLoaded', () => {
@@ -506,16 +505,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('authWarn').style.display = 'block';
     setTimeout(() => { window.location.href = 'login.html'; }, 2500);
     return;
-  } else {
-    const userName = lsGet('ot_user_name');
-    if (userName) {
-      document.getElementById('userInfo').style.display = 'block';
-      document.getElementById('userName').textContent = userName;
-    }
-    document.getElementById('reloginBtn').style.display = 'none';
-    document.getElementById('profileBtn').style.display = 'flex';
-    const bottomReloginBtn = document.getElementById('bottomReloginBtn');
-    if (bottomReloginBtn) bottomReloginBtn.style.display = 'none';
   }
 
   // Check if arriving from login.html with ?index= param pre-selected
@@ -556,10 +545,7 @@ async function checkBackend() {
   const badge = document.getElementById('navBadge');
 
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
-    const r = await fetch(`${BACKEND}/health`, { signal: controller.signal });
-    clearTimeout(timeoutId);
+    const r = await fetch(`${BACKEND}/health`, { signal: AbortSignal.timeout(5000) });
     const d = await r.json();
 
     if (d.market_open) {
@@ -599,7 +585,7 @@ function clearAndLogin() {
 
 // ── Utils ──
 function lsGet(k)     { try { return localStorage.getItem(k);    } catch(e){ return null; } }
-function lsSet(k, v)  { try { localStorage.setItem(k, v);        } catch(e){console.warn("localStorage set failed", e);} }
+function lsSet(k, v)  { try { localStorage.setItem(k, v);        } catch(e){} }
 
 let _tt;
 function toast(msg, type = 'info') {
